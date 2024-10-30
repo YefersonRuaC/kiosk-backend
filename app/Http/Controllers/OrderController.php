@@ -41,11 +41,13 @@ class OrderController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        //First, create order
         $order = new Order;
         // $order->user_id = Auth::user()->id;
         $order->total = $request->total;
         $order->save();
 
+        //Then, fill pivot table
         $id = $order->id;
         $products = $request->products;
         $order_product = [];
@@ -56,7 +58,7 @@ class OrderController extends Controller
                 'order_id' => $id,
                 'product_id' => $product['id'],
                 'quantity' => $product['quantity'],
-                //Insert doesn't create this laravel fields automatically
+                //Insert does not create this laravel fields automatically
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ];
